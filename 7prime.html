@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kobor - Munier Choudhury Presentation</title>
+    
+    <!-- Fonts: Hind Siliguri for Bengali -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* --- CORE RESET --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        
+        /* Scrollbar styling for text content */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(185, 28, 28, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(185, 28, 28, 0.6); }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #020617;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #1e293b;
+        }
+
+        /* --- DYNAMIC ATMOSPHERIC BACKGROUND (GRAVEYARD THEME) --- */
+        .graveyard-atmosphere {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Deep midnight/swamp gradient */
+            background: radial-gradient(circle at 50% 120%, #0f172a 0%, #020617 50%, #000000 100%);
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Glowing Orbs (Eerie, Misty Colors) */
+        .glow-spot {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            mix-blend-mode: screen;
+            animation: spiritFloat 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glow-1 { 
+            top: -20%; left: 10%; width: 60vw; height: 60vw; 
+            background: #334155; 
+            animation-duration: 30s; 
+        }
+        .glow-2 { 
+            bottom: -30%; right: -10%; width: 70vw; height: 70vw; 
+            background: #450a0a; 
+            animation-duration: 35s; 
+            animation-delay: -5s;
+            opacity: 0.5;
+        }
+        .glow-3 { 
+            top: 30%; left: -20%; width: 50vw; height: 50vw; 
+            background: #115e59; 
+            animation-duration: 28s; 
+            opacity: 0.3;
+        }
+
+        @keyframes spiritFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -30px) scale(1.1); opacity: 0.5; }
+            100% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* --- FIREFLIES / STARS --- */
+        .stars {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            background: #fef3c7;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            animation-delay: var(--delay);
+            box-shadow: 0 0 8px rgba(254, 243, 199, 0.6);
+        }
+        @keyframes twinkle {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            50% { opacity: 0.6; transform: translateY(-30px) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
+        }
+
+        /* --- SLIDE STAGE --- */
+        .slide-deck {
+            position: relative;
+            width: 1280px;
+            height: 720px;
+            perspective: 2000px;
+            z-index: 10;
+        }
+
+        .slide-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide-container.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+
+        /* --- MODERN GLASS PANEL (Projector Friendly - Light) --- */
+        .glass-panel {
+            width: 95%;
+            height: 94%;
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(50px) saturate(180%);
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            border-radius: 28px;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 
+                0 30px 60px -10px rgba(0, 0, 0, 0.7),
+                inset 0 0 20px rgba(255, 255, 255, 0.8);
+            padding: 40px 50px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(0,0,0,0.06);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+
+        .speaker-badge {
+            background: linear-gradient(135deg, #7f1d1d, #b91c1c);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(127, 29, 29, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 68px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #991b1b 0%, #450a0a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+            line-height: 1.1;
+        }
+
+        h2 { font-size: 34px; color: #0f172a; font-weight: 700; margin: 0; }
+        h3 { font-size: 22px; color: #475569; font-weight: 500; margin: 0; }
+
+        .content-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        p, li {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #334155;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .reveal-text { 
+            opacity: 0; 
+            transform: translateY(15px); 
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        }
+        .reveal-visible { opacity: 1; transform: translateY(0); }
+
+        .quote-card {
+            background: rgba(254, 242, 242, 0.9);
+            border-left: 6px solid #b91c1c;
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            font-size: 20px;
+            color: #7f1d1d;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* --- LAYOUTS --- */
+        .split-view {
+            display: flex;
+            gap: 40px;
+            height: 100%;
+            align-items: center;
+        }
+        .text-side { flex: 1.2; }
+        
+        /* IMAGE FRAME STYLE */
+        .img-side { 
+            flex: 0.8; 
+            height: 100%; 
+            max-height: 500px;
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 4px solid white; /* Consistent white border like 7.html */
+            position: relative;
+            background: #f1f5f9;
+        }
+        .img-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 6s ease;
+        }
+        .active .img-side img { transform: scale(1.1); }
+
+        .icon-container {
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+        }
+        .icon-container i {
+            font-size: 140px;
+            color: #94a3b8;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        }
+
+        ul.clean-list { list-style: none; }
+        ul.clean-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+        }
+        ul.clean-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background: #b91c1c;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #b91c1c;
+        }
+
+        /* --- MEMBER CARD FIX --- */
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-top: 35px;
+        }
+
+        .member-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            cursor: default;
+        }
+
+        .member-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: rgba(185, 28, 28, 0.2);
+        }
+
+        .member-num {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: #b91c1c;
+            background: rgba(254, 226, 226, 0.8);
+            /* INCREASED SIZE TO FIX CLIPPING */
+            width: 60px; 
+            height: 60px;
+            min-width: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* REMOVED PADDING HACK */
+            padding: 0;
+            margin: 0;
+            line-height: normal;
+        }
+
+        .member-info { display: flex; flex-direction: column; text-align: left; }
+
+        .member-info strong {
+            font-size: 18px;
+            color: #1e293b;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .member-info span {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* --- CONTROLS --- */
+        .nav-dock {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 2000;
+        }
+        .nav-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.3);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .nav-btn:hover { background: #b91c1c; transform: scale(1.1); border-color: #b91c1c; box-shadow: 0 0 15px rgba(185,28,28,0.5); }
+
+        .progress-track {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%; height: 6px;
+            background: rgba(255,255,255,0.05);
+            z-index: 2000;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444, #b91c1c);
+            width: 0%;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px #b91c1c;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Atmosphere: Glows + Starfield -->
+    <div class="graveyard-atmosphere">
+        <div class="glow-spot glow-1"></div>
+        <div class="glow-spot glow-2"></div>
+        <div class="glow-spot glow-3"></div>
+        <div id="starfield" class="stars"></div>
+    </div>
+
+    <div class="slide-deck">
+
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide-container active">
+            <div class="glass-panel" style="align-items: center; text-align: center; justify-content: center;">
+                <i class="fa-solid fa-moon" style="font-size: 80px; color: #b91c1c; margin-bottom: 20px; filter: drop-shadow(0 4px 8px rgba(185,28,28,0.3)); animation: float 6s infinite ease-in-out;"></i>
+                
+                <h1 class="reveal-text">কবর</h1>
+                <h3 class="reveal-text" style="font-size: 28px; color: #475569; margin-bottom: 20px;">শহীদ মুনীর চৌধুরী</h3>
+                
+                <div class="member-grid">
+                    <div class="member-card reveal-text">
+                        <div class="member-num">১</div>
+                        <div class="member-info">
+                            <strong>ইরতিসাম আবতাহি</strong>
+                            <span>ভূমিকা ও লেখক</span>
+                        </div>
+                    </div>
+                    <div class="member-card reveal-text">
+                        <div class="member-num">২</div>
+                        <div class="member-info">
+                            <strong>চিন্ময় চৌধুরী</strong>
+                            <span>প্রেক্ষাপট</span>
+                        </div>
+                    </div>
+                    <div class="member-card reveal-text">
+                        <div class="member-num">৩</div>
+                        <div class="member-info">
+                            <strong>মারজুক আবদুল্লাহ</strong>
+                            <span>বিষয়বস্তু</span>
+                        </div>
+                    </div>
+                    <div class="member-card reveal-text">
+                        <div class="member-num">৪</div>
+                        <div class="member-info">
+                            <strong>শাহীদ ফারহান</strong>
+                            <span>চরিত্র (শোষক)</span>
+                        </div>
+                    </div>
+                    <div class="member-card reveal-text">
+                        <div class="member-num">৫</div>
+                        <div class="member-info">
+                            <strong>অরুনাভ রহমান</strong>
+                            <span>চরিত্র (শোষিত)</span>
+                        </div>
+                    </div>
+                    <div class="member-card reveal-text">
+                        <div class="member-num">৬</div>
+                        <div class="member-info">
+                            <strong>মঞ্জুরুল হাসান</strong>
+                            <span>প্রাসঙ্গিকতা</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: AUTHOR (Framed like 7.html) -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>লেখক পরিচিতি</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> ইরতিসাম আবতাহি</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="text-side">
+                            <h3>মুনীর চৌধুরী (১৯২৫-১৯৭১)</h3>
+                            <ul class="clean-list">
+                                <li class="reveal-text">একজন প্রগতিশীল শিক্ষাবিদ, নাট্যকার ও সাহিত্য সমালোচক।</li>
+                                <li class="reveal-text">১৯৫২ সালের ভাষা আন্দোলনে সক্রিয় অংশগ্রহণের জন্য কারাবরণ করেন।</li>
+                                <li class="reveal-text"><strong>'কবর'</strong> নাটকটি তিনি ১৯৫৩ সালে ঢাকা কেন্দ্রীয় কারাগারে রাজবন্দি থাকাকালীন রচনা করেন।</li>
+                                <li class="reveal-text">তিনি ১৯৭১ সালে বুদ্ধিজীবী হত্যাকাণ্ডে শহীদ হন।</li>
+                            </ul>
+                        </div>
+                        <div class="img-side">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/11971889403641597263" alt="Munier Choudhury">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: CONTEXT -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>নাটক রচনার ইতিহাস</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> ইরতিসাম আবতাহি</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="img-side">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/15738768162472219966" alt="Jail Context">
+                        </div>
+                        <div class="text-side" style="padding-left: 30px;">
+                            <h3>কারাগারের অন্ধকোঠরীতে সৃষ্টি</h3>
+                            <p class="reveal-text">নাটকটি এমন এক সময়ে লেখা যখন বাইরে ভাষা আন্দোলন তুঙ্গে। জেলখানায় বন্দিদের মনোবল চাঙ্গা রাখার জন্য এটি লেখা হয়।</p>
+                            <div class="quote-card reveal-text">
+                                "মঞ্চের অভাব, আলোর অভাব, এমনকি নারী চরিত্রের অভাব—সব সীমাবদ্ধতা মাথায় রেখেই মুনীর চৌধুরী এই অমর সৃষ্টিটি করেন।"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: HISTORICAL BACKGROUND -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>ঐতিহাসিক প্রেক্ষাপট: ১৯৫২</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> চিন্ময় চৌধুরী</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="text-side">
+                            <ul class="clean-list">
+                                <li class="reveal-text"><strong>সময়:</strong> ১৯৫২ সালের ২১শে ফেব্রুয়ারি পরবর্তী উত্তাল সময়।</li>
+                                <li class="reveal-text"><strong>পরিস্থিতি:</strong> ঢাকায় কারফিউ, ছাত্র-জনতার মিছিলে পুলিশের গুলি।</li>
+                                <li class="reveal-text"><strong>শাসকের কৌশল:</strong> নিহতদের লাশ গুম করে ফেলার মাধ্যমে আন্দোলনের চিহ্ন মুছে ফেলার চেষ্টা।</li>
+                                <li class="reveal-text">এই নাটকটি সেই 'লাশ গুম' করার রাজনীতির এক দালিলিক প্রমাণ।</li>
+                            </ul>
+                        </div>
+                        <div class="img-side">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/11415711787659022809" alt="Language Movement">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: ATMOSPHERE -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>নাটকের পরিবেশ ও আবহ</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> চিন্ময় চৌধুরী</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="img-side">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/4789185073423781761" alt="Graveyard">
+                        </div>
+                        <div class="text-side" style="padding-left: 30px;">
+                            <h3>গোরস্তানের অন্ধকার</h3>
+                            <ul class="clean-list">
+                                <li class="reveal-text">পুরো নাটকটি একটি মাত্র অঙ্কে এবং একটি স্থানেই সংঘটিত হয়—সেটি হলো <strong>কবরস্থান</strong>।</li>
+                                <li class="reveal-text">গভীর রাত, হারিকেনের টিমটিমে আলো এবং কবর খোঁড়ার শব্দ।</li>
+                                <li class="reveal-text">এই পরিবেশ দর্শকদের মনে ভীতি ও রহস্য তৈরি করে, যা তৎকালীন স্বৈরাচারী শাসনের শ্বাসরুদ্ধকর পরিস্থিতির রূপক।</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: PLOT -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>গল্পাংশ: ষড়যন্ত্র</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> মারজুক আবদুল্লাহ</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="text-side">
+                            <h3>লাশ গুমের প্রচেষ্টা</h3>
+                            <p class="reveal-text">নেতা (রাজনীতিবিদ) এবং পুলিশ অফিসার হাফিজ কবরস্থানে আসে। উদ্দেশ্য—মিছিলে নিহত ছাত্রদের লাশগুলো রাতের আঁধারে গণকবর দেওয়া।</p>
+                            <ul class="clean-list">
+                                <li class="reveal-text">নেতা মদ্যপ অবস্থায় প্রলাপ বকছে, সে ভয়ে অস্থির।</li>
+                                <li class="reveal-text">হাফিজ তার বসের হুকুম পালনে ব্যস্ত, যদিও তার বিবেক দংশিত হচ্ছে।</li>
+                            </ul>
+                        </div>
+                        <div class="img-side">
+                            <div class="icon-container">
+                                <i class="fa-solid fa-user-secret"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: CLIMAX -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>গল্পাংশ: জাদুবান্তবতা ও বিদ্রোহ</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> মারজুক আবদুল্লাহ</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="img-side">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/10608472207229325352" alt="Spirits" style="filter: hue-rotate(180deg);">
+                        </div>
+                        <div class="text-side" style="padding-left: 30px;">
+                            <h3>"আমরা কবরে যাব না"</h3>
+                            <p class="reveal-text">নাটকের ক্লাইম্যাক্সে ঘটে এক অলৌকিক ঘটনা। যে লাশগুলোকে মাটিচাপা দেওয়ার কথা, তারা হঠাৎ কথা বলে ওঠে।</p>
+                            <div class="quote-card reveal-text">
+                                "গুলি খাওয়া শরীর নিয়ে তারা উঠে দাঁড়ায়। তারা কবরে যেতে অস্বীকার করে।"
+                            </div>
+                            <p class="reveal-text">এটি মৃত মানুষের ফিরে আসা নয়, এটি বিবেকের জাগরণ।</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: CHARACTER - LEADER -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>চরিত্র: নেতা (শোষক)</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> শাহীদ ফারহান</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="text-side">
+                            <h3>সুবিধাবাদী রাজনীতিক</h3>
+                            <ul class="clean-list">
+                                <li class="reveal-text">সে ক্ষমতালোভী এবং ভীতু। জনগণকে সে ভয় পায়, তাই লাশ লুকাতে চায়।</li>
+                                <li class="reveal-text">নিজের ভয় কাটাতে সে মদ্যপান করে এবং অসংলগ্ন কথা বলে।</li>
+                                <li class="reveal-text">সে তৎকালীন মুসলিম লীগ সরকারের প্রতিনিধি।</li>
+                            </ul>
+                        </div>
+                        <div class="img-side">
+                             <div class="icon-container" style="background: linear-gradient(135deg, #fecaca, #f87171);">
+                                <i class="fa-solid fa-user-tie" style="color: #7f1d1d;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: CHARACTER - HAFIZ -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>চরিত্র: ইন্সপেক্টর হাফিজ</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> শাহীদ ফারহান</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="img-side">
+                            <div class="icon-container" style="background: linear-gradient(135deg, #e0f2fe, #7dd3fc);">
+                                <i class="fa-solid fa-walkie-talkie" style="color: #0c4a6e;"></i>
+                            </div>
+                        </div>
+                        <div class="text-side" style="padding-left: 30px;">
+                            <h3>আজ্ঞাবহ আমলা</h3>
+                            <p class="reveal-text">হাফিজ হলো সেই শ্রেণীর প্রতিনিধি যারা 'উপরের অর্ডার' পালন করতে গিয়ে নিজের মনুষ্যত্ব বিসর্জন দেয়।</p>
+                            <ul class="clean-list">
+                                <li class="reveal-text">সে জানে সে অন্যায় করছে, কিন্তু চাকরি বাঁচানো তার কাছে মুখ্য।</li>
+                                <li class="reveal-text">নেতাকে তোষামোদ করাই তার কাজ।</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: CHARACTER - FAKIR -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>চরিত্র: মুর্দা ফকির</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> অরুনাভ রহমান</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="text-side">
+                            <h3>নাটকের বিবেক</h3>
+                            <p class="reveal-text">মুর্দা ফকির একজন পাগল মানুষ, যে সবসময় গোরস্থানে থাকে। কিন্তু তার পাগলামির ভেতরেই লুকিয়ে আছে চরম সত্য।</p>
+                            <ul class="clean-list">
+                                <li class="reveal-text">সে জীবিতদের 'মরা' বলে, কারণ তাদের বিবেক মৃত।</li>
+                                <li class="reveal-text">সে গন্ধ শুঁকে বুঝতে পারে কার শরীরে বারুদের গন্ধ (শহীদ)।</li>
+                            </ul>
+                        </div>
+                        <div class="img-side">
+                            <div class="icon-container" style="background: linear-gradient(135deg, #fef3c7, #fbbf24);">
+                                <i class="fa-solid fa-eye" style="color: #78350f;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: SPIRITS -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>চরিত্র: মূর্তিসমূহ (শহীদ)</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> অরুনাভ রহমান</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="img-side">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/10608472207229325352" alt="Martyrs" style="opacity: 0.8;">
+                        </div>
+                        <div class="text-side" style="padding-left: 30px;">
+                            <h3>অবিনাশী সত্তা</h3>
+                            <p class="reveal-text">কবর নাটকের সবচেয়ে শক্তিশালী চরিত্র হলো এই নামহীন লাশগুলো। তারা কোনো ব্যক্তি নয়, তারা এক একটি স্ফুলিঙ্গ।</p>
+                            <div class="quote-card reveal-text">
+                                "আমরা মরতে চাইনি, আমরা মরব না।"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: RELEVANCE -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>বর্তমান প্রাসঙ্গিকতা</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> মঞ্জুরুল হাসান</div>
+                </div>
+                <div class="content-body">
+                    <div class="split-view">
+                        <div class="text-side">
+                            <h3>কেন আজও প্রাসঙ্গিক?</h3>
+                            <p class="reveal-text">'কবর' কেবল ১৯৫২ সালের নাটক নয়, এটি সব সময়ের। আজও কি গুম, হত্যা, আর সত্যকে মাটিচাপা দেওয়ার সংস্কৃতি বন্ধ হয়েছে?</p>
+                            <ul class="clean-list">
+                                <li class="reveal-text"><strong>গুম সংস্কৃতি:</strong> আজও ভিন্নমতাবলম্বীদের গুম করার প্রবণতা দেখা যায়।</li>
+                                <li class="reveal-text"><strong>সত্য গোপন:</strong> ক্ষমতা টিকিয়ে রাখতে সত্য ধামাচাপা দেওয়ার চেষ্টা আজও চলছে।</li>
+                            </ul>
+                        </div>
+                        <div class="img-side">
+                            <div class="icon-container">
+                                <i class="fa-solid fa-scale-unbalanced"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: CONCLUSION -->
+        <div class="slide-container">
+            <div class="glass-panel">
+                <div class="slide-header">
+                    <h2>উপসংহার</h2>
+                    <div class="speaker-badge"><i class="fa-solid fa-user"></i> মঞ্জুরুল হাসান</div>
+                </div>
+                <div class="content-body" style="text-align: center; align-items: center;">
+                    <i class="fa-solid fa-lightbulb" style="font-size: 80px; color: #fbbf24; margin-bottom: 30px; filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4)); animation: pulseBlob 3s infinite;"></i>
+                    <h3 class="reveal-text" style="font-size: 40px; color: #1e293b; margin-bottom: 20px;">ভয়কে জয় করার নামই জীবন</h3>
+                    <div class="quote-card reveal-text" style="font-size: 28px; width: 80%; margin: 0 auto;">
+                        "লাশগুলো যখন কথা বলে ওঠে, তখন স্বৈরাচারের পতন নিশ্চিত হয়।"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: Q&A -->
+        <div class="slide-container">
+            <div class="glass-panel" style="justify-content: center; align-items: center; text-align: center;">
+                <i class="fa-regular fa-comments" style="font-size: 90px; color: #b91c1c; margin-bottom: 20px; animation: pulseBlob 2s infinite;"></i>
+                <h1 style="font-size: 80px;">প্রশ্নোত্তর পর্ব</h1>
+                <p style="font-size: 30px; color: #334155;">আপনাদের কোনো প্রশ্ন বা মতামত থাকলে জানাতে পারেন।</p>
+                <h2 style="color: #b91c1c; margin-top: 40px; font-size: 48px;">ধন্যবাদ!</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Controls -->
+    <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+    <div class="nav-dock">
+        <button class="nav-btn" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="nav-btn" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-container');
+        const progressBar = document.getElementById('progressBar');
+        const starfield = document.getElementById('starfield');
+        const totalSlides = slides.length;
+
+        // Generate Fireflies/Stars
+        function createStars() {
+            for (let i = 0; i < 40; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 4 + 2 + 'px'; 
+                star.style.width = size;
+                star.style.height = size;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--duration', (Math.random() * 5 + 3) + 's');
+                star.style.setProperty('--delay', (Math.random() * 5) + 's');
+                starfield.appendChild(star);
+            }
+        }
+
+        // Animations
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes float {
+                0% { transform: translateY(0px) rotate(0deg); }
+                50% { transform: translateY(-15px) rotate(5deg); }
+                100% { transform: translateY(0px) rotate(0deg); }
+            }
+            @keyframes pulseBlob {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        function init() {
+            createStars();
+            slides[currentSlide].classList.add('active');
+            revealContent(currentSlide);
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        function changeSlide(direction) {
+            const nextSlide = currentSlide + direction;
+            if (nextSlide >= 0 && nextSlide < totalSlides) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = nextSlide;
+                slides[currentSlide].classList.add('active');
+                updateProgress();
+                revealContent(currentSlide);
+            }
+        }
+
+        function revealContent(slideIndex) {
+            const slide = slides[slideIndex];
+            const textElements = slide.querySelectorAll('.reveal-text');
+            
+            textElements.forEach(el => el.classList.remove('reveal-visible'));
+
+            textElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('reveal-visible');
+                }, 300 + (index * 300));
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        setTimeout(init, 100);
+    </script>
+</body>
+</html>
