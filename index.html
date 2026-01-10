@@ -1,536 +1,569 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Github, 
-  Linkedin, 
-  Facebook, 
-  Instagram, 
-  Mail, 
-  MapPin, 
-  Cpu, 
-  Code, 
-  Terminal, 
-  Wifi, 
-  Layers, 
-  ExternalLink,
-  ChevronDown,
-  Award,
-  BookOpen,
-  Briefcase
-} from 'lucide-react';
-
-const Portfolio = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [activeSection, setActiveSection] = useState('home');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const containerRef = useRef(null);
-
-  // Handle mouse movement for spotlight effect
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  // Smooth scroll handler
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsMenuOpen(false);
-    setActiveSection(id);
-  };
-
-  const navItems = [
-    { id: 'home', label: 'Identity' },
-    { id: 'skills', label: 'Capabilities' },
-    { id: 'projects', label: 'Protocols' },
-    { id: 'experience', label: 'Timeline' },
-    { id: 'contact', label: 'Uplink' }
-  ];
-
-  return (
-    <div 
-      ref={containerRef}
-      className="min-h-screen bg-slate-950 text-slate-200 selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden font-sans"
-    >
-      {/* Background Grid & Spotlight */}
-      <div 
-        className="fixed inset-0 z-0 pointer-events-none transition-opacity duration-300"
-        style={{
-          background: `
-            radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(29, 78, 216, 0.15), transparent 80%),
-            linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: '100% 100%, 40px 40px, 40px 40px'
-        }}
-      />
-      
-      {/* Floating Particles/Orb (Visual Flair) */}
-      <div className="fixed top-20 right-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse z-0 pointer-events-none" />
-      <div className="fixed bottom-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse z-0 pointer-events-none" />
-
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-md border-b border-slate-800/50 bg-slate-950/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('home')}>
-              <Terminal className="w-6 h-6 text-cyan-400" />
-              <span className="font-bold text-lg tracking-wider text-slate-100">
-                MONJURUL<span className="text-cyan-400">.DEV</span>
-              </span>
-            </div>
-            
-            {/* Desktop Nav */}
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                {navItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-                      activeSection === item.id 
-                        ? 'text-cyan-400 bg-cyan-950/30 shadow-[0_0_10px_rgba(34,211,238,0.2)] border border-cyan-500/20' 
-                        : 'text-slate-400 hover:text-cyan-300 hover:bg-slate-800/50'
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none"
-              >
-                <div className="space-y-1.5">
-                  <span className={`block w-6 h-0.5 bg-current transform transition-all ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-                  <span className={`block w-6 h-0.5 bg-current transition-all ${isMenuOpen ? 'opacity-0' : ''}`} />
-                  <span className={`block w-6 h-0.5 bg-current transform transition-all ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Nav Panel */}
-        <div className={`md:hidden transition-all duration-300 overflow-hidden ${isMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-slate-900/90 border-b border-slate-800">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="relative z-10 pt-16">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Md Monjurul Hasan Bhuiyan | Cyber Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        /* Custom Animations */
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
         
-        {/* HERO SECTION */}
-        <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden px-4">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-mono animate-fade-in-up">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-                </span>
-                System Online
-              </div>
-              
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white">
-                MD MONJURUL <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 glitch-text" data-text="HASAN BHUIYAN">
-                  HASAN BHUIYAN
-                </span>
-              </h1>
-              
-              <div className="text-xl md:text-2xl text-slate-400 font-light h-8">
-                <Typewriter text={["Engineering Student", "IoT Enthusiast", "Problem Solver", "Cybersec Researcher"]} />
-              </div>
-              
-              <p className="max-w-lg text-slate-400 leading-relaxed">
-                Passionate problem solver proficient in microcontrollers, control systems, and IoT. 
-                Skilled in Python, Linux, and Cloud Architecture. Turning complex problems into elegant code.
-              </p>
-              
-              <div className="flex flex-wrap gap-4 pt-4">
-                <a href="https://github.com/Monjurul-Hasan-Sohan" target="_blank" rel="noreferrer" className="group relative px-6 py-3 bg-slate-800 hover:bg-slate-700 rounded-lg overflow-hidden transition-all border border-slate-700 hover:border-cyan-500/50">
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-cyan-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                  <div className="flex items-center gap-2">
-                    <Github className="w-5 h-5 text-white" />
-                    <span className="font-medium">GitHub</span>
-                  </div>
-                </a>
-                <a href="https://www.linkedin.com/in/monjurul-hasan-bhuiyan/" target="_blank" rel="noreferrer" className="group px-6 py-3 bg-blue-600/10 hover:bg-blue-600/20 rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-all">
-                  <div className="flex items-center gap-2 text-blue-400 group-hover:text-blue-300">
-                    <Linkedin className="w-5 h-5" />
-                    <span className="font-medium">LinkedIn</span>
-                  </div>
-                </a>
-                <button onClick={() => scrollToSection('contact')} className="px-6 py-3 bg-transparent hover:bg-slate-800 rounded-lg border border-slate-700 transition-all text-slate-300">
-                  Contact Me
-                </button>
-              </div>
-            </div>
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        .glitch-text:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: #22d3ee;
+        }
+        
+        /* Hide scrollbar for cleaner look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div id="root"></div>
 
-            {/* Hero Visual - Abstract Tech Card */}
-            <div className="relative hidden lg:block group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-              <div className="relative bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl overflow-hidden">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-4">
-                    <div className="h-2 w-20 bg-slate-700 rounded animate-pulse"></div>
-                    <div className="h-2 w-32 bg-slate-700 rounded animate-pulse delay-75"></div>
-                    <div className="h-24 bg-slate-800/50 rounded border border-slate-700/50 p-4 font-mono text-xs text-green-400">
-                      &gt; connecting to server...<br/>
-                      &gt; authentication: success<br/>
-                      &gt; fetching user_profile...<br/>
-                      &gt; status: active<br/>
-                      <span className="animate-pulse">_</span>
-                    </div>
-                  </div>
-                  <div className="relative h-48 bg-slate-800 rounded border border-slate-700 overflow-hidden flex items-center justify-center">
-                    <Cpu className="w-20 h-20 text-slate-600 group-hover:text-cyan-500 transition-colors duration-500" />
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- Icons (Inline SVGs for single-file portability) ---
+        const Icons = {
+            Github: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0 3 1 2 2.5 2.5 0 0 0-3.5 0C8.77 4.5 7.13 4.5 5.5 5c-.75-.25-2.25-1-3.5 0-.28 1.15-.28 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>,
+            Linkedin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>,
+            Facebook: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>,
+            Instagram: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>,
+            Mail: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
+            MapPin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
+            Cpu: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>,
+            Code: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
+            Terminal: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>,
+            Wifi: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></svg>,
+            Layers: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>,
+            ExternalLink: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>,
+            ChevronDown: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m6 9 6 6 6-6"/></svg>,
+            Award: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
+            BookOpen: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+            Briefcase: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        };
+
+        const Portfolio = () => {
+            const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+            const [activeSection, setActiveSection] = useState('home');
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const containerRef = useRef(null);
+
+            useEffect(() => {
+                const handleMouseMove = (e) => {
+                    setMousePosition({ x: e.clientX, y: e.clientY });
+                };
+                window.addEventListener('mousemove', handleMouseMove);
+                return () => window.removeEventListener('mousemove', handleMouseMove);
+            }, []);
+
+            const scrollToSection = (id) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsMenuOpen(false);
+                setActiveSection(id);
+            };
+
+            const navItems = [
+                { id: 'home', label: 'Identity' },
+                { id: 'skills', label: 'Capabilities' },
+                { id: 'projects', label: 'Protocols' },
+                { id: 'experience', label: 'Timeline' },
+                { id: 'contact', label: 'Uplink' }
+            ];
+
+            return (
+                <div 
+                    ref={containerRef}
+                    className="min-h-screen bg-slate-950 text-slate-200 overflow-x-hidden font-sans relative"
+                >
+                    {/* Background Grid & Spotlight */}
+                    <div 
+                        className="fixed inset-0 z-0 pointer-events-none transition-opacity duration-300"
+                        style={{
+                            background: `
+                                radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(29, 78, 216, 0.15), transparent 80%),
+                                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+                            `,
+                            backgroundSize: '100% 100%, 40px 40px, 40px 40px'
+                        }}
+                    />
                     
-                    {/* Decorative circles */}
-                    <div className="absolute inset-0 border-[1px] border-slate-700/30 rounded-full scale-150 animate-[spin_10s_linear_infinite]" />
-                    <div className="absolute inset-0 border-[1px] border-dashed border-slate-700/30 rounded-full scale-125 animate-[spin_15s_linear_infinite_reverse]" />
-                  </div>
+                    {/* Floating Particles/Orb */}
+                    <div className="fixed top-20 right-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse z-0 pointer-events-none"></div>
+                    <div className="fixed bottom-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse z-0 pointer-events-none"></div>
+
+                    {/* Navigation */}
+                    <nav className="fixed top-0 w-full z-50 backdrop-blur-md border-b border-slate-800/50 bg-slate-950/80">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex items-center justify-between h-16">
+                                <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('home')}>
+                                    <Icons.Terminal className="w-6 h-6 text-cyan-400" />
+                                    <span className="font-bold text-lg tracking-wider text-slate-100">
+                                        MONJURUL<span className="text-cyan-400">.DEV</span>
+                                    </span>
+                                </div>
+                                
+                                {/* Desktop Nav */}
+                                <div className="hidden md:block">
+                                    <div className="ml-10 flex items-baseline space-x-4">
+                                        {navItems.map((item) => (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => scrollToSection(item.id)}
+                                                className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                                                    activeSection === item.id 
+                                                        ? 'text-cyan-400 bg-cyan-950/30 shadow-[0_0_10px_rgba(34,211,238,0.2)] border border-cyan-500/20' 
+                                                        : 'text-slate-400 hover:text-cyan-300 hover:bg-slate-800/50'
+                                                }`}
+                                            >
+                                                {item.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Mobile menu button */}
+                                <div className="md:hidden">
+                                    <button
+                                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                        className="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none"
+                                    >
+                                        <div className="space-y-1.5">
+                                            <span className={`block w-6 h-0.5 bg-current transform transition-all ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+                                            <span className={`block w-6 h-0.5 bg-current transition-all ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+                                            <span className={`block w-6 h-0.5 bg-current transform transition-all ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Mobile Nav Panel */}
+                        <div className={`md:hidden transition-all duration-300 overflow-hidden ${isMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
+                            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-slate-900/90 border-b border-slate-800">
+                                {navItems.map((item) => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => scrollToSection(item.id)}
+                                        className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800"
+                                    >
+                                        {item.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Main Content */}
+                    <main className="relative z-10 pt-16">
+                        
+                        {/* HERO SECTION */}
+                        <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden px-4">
+                            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                                <div className="space-y-6">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-mono animate-fade-in-up">
+                                        <span className="relative flex h-2 w-2">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                                        </span>
+                                        System Online
+                                    </div>
+                                    
+                                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white">
+                                        MD MONJURUL <br />
+                                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 glitch-text" data-text="HASAN BHUIYAN">
+                                            HASAN BHUIYAN
+                                        </span>
+                                    </h1>
+                                    
+                                    <div className="text-xl md:text-2xl text-slate-400 font-light h-8">
+                                        <Typewriter text={["Engineering Student", "IoT Enthusiast", "Problem Solver", "Cybersec Researcher"]} />
+                                    </div>
+                                    
+                                    <p className="max-w-lg text-slate-400 leading-relaxed">
+                                        Passionate problem solver proficient in microcontrollers, control systems, and IoT. 
+                                        Skilled in Python, Linux, and Cloud Architecture. Turning complex problems into elegant code.
+                                    </p>
+                                    
+                                    <div className="flex flex-wrap gap-4 pt-4">
+                                        <a href="https://github.com/Monjurul-Hasan-Sohan" target="_blank" rel="noreferrer" className="group relative px-6 py-3 bg-slate-800 hover:bg-slate-700 rounded-lg overflow-hidden transition-all border border-slate-700 hover:border-cyan-500/50">
+                                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-cyan-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                                            <div className="flex items-center gap-2 text-white">
+                                                <Icons.Github className="w-5 h-5" />
+                                                <span className="font-medium">GitHub</span>
+                                            </div>
+                                        </a>
+                                        <a href="https://www.linkedin.com/in/monjurul-hasan-bhuiyan/" target="_blank" rel="noreferrer" className="group px-6 py-3 bg-blue-600/10 hover:bg-blue-600/20 rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-all">
+                                            <div className="flex items-center gap-2 text-blue-400 group-hover:text-blue-300">
+                                                <Icons.Linkedin className="w-5 h-5" />
+                                                <span className="font-medium">LinkedIn</span>
+                                            </div>
+                                        </a>
+                                        <button onClick={() => scrollToSection('contact')} className="px-6 py-3 bg-transparent hover:bg-slate-800 rounded-lg border border-slate-700 transition-all text-slate-300">
+                                            Contact Me
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Hero Visual */}
+                                <div className="relative hidden lg:block group">
+                                    <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                                    <div className="relative bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl overflow-hidden">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-4">
+                                                <div className="h-2 w-20 bg-slate-700 rounded animate-pulse"></div>
+                                                <div className="h-2 w-32 bg-slate-700 rounded animate-pulse delay-75"></div>
+                                                <div className="h-24 bg-slate-800/50 rounded border border-slate-700/50 p-4 font-mono text-xs text-green-400">
+                                                    &gt; connecting to server...<br/>
+                                                    &gt; authentication: success<br/>
+                                                    &gt; fetching user_profile...<br/>
+                                                    &gt; status: active<br/>
+                                                    <span className="animate-pulse">_</span>
+                                                </div>
+                                            </div>
+                                            <div className="relative h-48 bg-slate-800 rounded border border-slate-700 overflow-hidden flex items-center justify-center">
+                                                <Icons.Cpu className="w-20 h-20 text-slate-600 group-hover:text-cyan-500 transition-colors duration-500" />
+                                                <div className="absolute inset-0 border-[1px] border-slate-700/30 rounded-full scale-150 animate-[spin_10s_linear_infinite]"></div>
+                                                <div className="absolute inset-0 border-[1px] border-dashed border-slate-700/30 rounded-full scale-125 animate-[spin_15s_linear_infinite_reverse]"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer" onClick={() => scrollToSection('skills')}>
+                                <Icons.ChevronDown className="w-6 h-6 text-slate-500" />
+                            </div>
+                        </section>
+
+                        {/* SKILLS SECTION */}
+                        <section id="skills" className="py-24 px-4 relative">
+                            <div className="max-w-7xl mx-auto">
+                                <h2 className="text-3xl font-bold mb-12 flex items-center gap-3">
+                                    <span className="w-10 h-1 bg-cyan-500 rounded-full"></span>
+                                    Technical Arsenal
+                                </h2>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <SkillCard 
+                                        icon={<Icons.Code />} 
+                                        title="Languages & Scripting" 
+                                        skills={['Python (OpenCV)', 'Bash Scripting', 'LaTeX', 'C/C++']} 
+                                        color="border-yellow-500/20 text-yellow-500"
+                                    />
+                                    <SkillCard 
+                                        icon={<Icons.Cpu />} 
+                                        title="Embedded & IoT" 
+                                        skills={['Microcontrollers', 'Control Systems', 'IoT Integration', 'Thermal Sensors']} 
+                                        color="border-cyan-500/20 text-cyan-500"
+                                    />
+                                    <SkillCard 
+                                        icon={<Icons.Terminal />} 
+                                        title="System Admin" 
+                                        skills={['Linux/Unix', 'Windows Config', 'Network Admin (CCNA)', 'AWS & GCP']} 
+                                        color="border-green-500/20 text-green-500"
+                                    />
+                                    <SkillCard 
+                                        icon={<Icons.Wifi />} 
+                                        title="Cybersecurity" 
+                                        skills={['Penetration Testing', 'MITM Attacks', 'SQL Injection', 'Wireshark']} 
+                                        color="border-red-500/20 text-red-500"
+                                    />
+                                    <SkillCard 
+                                        icon={<Icons.Layers />} 
+                                        title="Design & Simulation" 
+                                        skills={['SolidWorks', 'Blender 3D', 'Multisim/OrCAD', 'Processing']} 
+                                        color="border-purple-500/20 text-purple-500"
+                                    />
+                                    <SkillCard 
+                                        icon={<Icons.Briefcase />} 
+                                        title="Development" 
+                                        skills={['API Development', 'QT & GTK3', 'Automation', 'Cross-Platform UI']} 
+                                        color="border-blue-500/20 text-blue-500"
+                                    />
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* PROJECTS SECTION */}
+                        <section id="projects" className="py-24 px-4 bg-slate-900/30">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="flex justify-between items-end mb-12">
+                                    <h2 className="text-3xl font-bold flex items-center gap-3">
+                                        <span className="w-10 h-1 bg-purple-500 rounded-full"></span>
+                                        Featured Projects
+                                    </h2>
+                                    <a href="https://github.com/Monjurul-Hasan-Sohan" target="_blank" rel="noreferrer" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                        View GitHub <Icons.ExternalLink className="w-3 h-3" />
+                                    </a>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <ProjectCard 
+                                        title="CNC Plotting System"
+                                        desc="A precision drawing machine integrating hardware and software control. Designed to create accurate and detailed designs with custom plotting algorithms."
+                                        tech={['Embedded', 'C++', 'Hardware', 'Control Systems']}
+                                    />
+                                    <ProjectCard 
+                                        title="Thermal Sensing System"
+                                        desc="Developed with Digitize IO for environmental monitoring. Utilizes sensor arrays to detect heat patterns and collect real-time data."
+                                        tech={['IoT', 'Sensors', 'Data Collection', 'Python']}
+                                    />
+                                    <ProjectCard 
+                                        title="IoT Smart Home"
+                                        desc="Comprehensive home automation system for remote control of appliances. Focuses on energy efficiency and user convenience via remote monitoring."
+                                        tech={['IoT', 'Network', 'Automation', 'Cloud']}
+                                    />
+                                    <ProjectCard 
+                                        title="Robo-Soccer Robot"
+                                        desc="Autonomous robot designed for the BRACU Traction Robo-Strikers competition. Features pathfinding, object detection, and motor control logic."
+                                        tech={['Robotics', 'C++', 'Algorithms', 'Motors']}
+                                    />
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* EXPERIENCE & EDUCATION SECTION */}
+                        <section id="experience" className="py-24 px-4 relative">
+                            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+                                
+                                {/* Education Column */}
+                                <div>
+                                    <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+                                        <Icons.BookOpen className="text-cyan-400" />
+                                        Education
+                                    </h2>
+                                    <div className="space-y-8 border-l-2 border-slate-800 ml-3 pl-8 relative">
+                                        <TimelineItem 
+                                            date="Feb 2025 - Present"
+                                            title="B.Sc. in Computer Science & Engineering"
+                                            org="BRAC University"
+                                            loc="Dhaka, Bangladesh"
+                                        />
+                                        <TimelineItem 
+                                            date="Oct 2024 - Feb 2025"
+                                            title="B.Sc. in Electrical & Computer Engineering"
+                                            org="North South University"
+                                            loc="Dhaka, Bangladesh"
+                                            note="(Transferred)"
+                                        />
+                                        <TimelineItem 
+                                            date="2021 - 2023"
+                                            title="Higher Secondary Certificate (HSC)"
+                                            org="National Ideal College"
+                                            loc="Dhaka, Bangladesh"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Achievements Column */}
+                                <div>
+                                    <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+                                        <Icons.Award className="text-yellow-400" />
+                                        Achievements
+                                    </h2>
+                                    <div className="grid grid-cols-1 gap-4">
+                                        <AchievementCard title="National Physics Olympiad Champion" />
+                                        <AchievementCard title="IOI Olympiad National Qualifier" />
+                                        <AchievementCard title="Inspire Leadership Program Graduate" />
+                                        <AchievementCard title="NSU Techfest Robo-Soccer Participant" />
+                                        <AchievementCard title="OCW Top Performer & MITx Certification" />
+                                        <AchievementCard title="Hackerspace Community Top Volunteer" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+
+                        {/* CONTACT SECTION */}
+                        <section id="contact" className="py-24 px-4 bg-gradient-to-t from-slate-900 to-slate-950 border-t border-slate-800">
+                            <div className="max-w-4xl mx-auto text-center">
+                                <h2 className="text-3xl font-bold mb-6">Initialize Connection</h2>
+                                <p className="text-slate-400 mb-12">
+                                    Based in Bashundhara R/A, Dhaka. Open for collaborations on embedded systems, IoT, and cybersecurity projects.
+                                </p>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+                                    <ContactBox 
+                                        href="mailto:monjurulhasanbd71@gmail.com" 
+                                        icon={<Icons.Mail className="w-6 h-6" />}
+                                        label="Email"
+                                        value="monjurulhasanbd71@gmail.com"
+                                    />
+                                    <ContactBox 
+                                        href="https://maps.app.goo.gl/VzQQoAVHyYyGHA298" 
+                                        icon={<Icons.MapPin className="w-6 h-6" />}
+                                        label="Location"
+                                        value="Bashundhara R/A, Dhaka"
+                                    />
+                                    <ContactBox 
+                                        href="https://www.linkedin.com/in/monjurul-hasan-bhuiyan/" 
+                                        icon={<Icons.Linkedin className="w-6 h-6" />}
+                                        label="LinkedIn"
+                                        value="Connect professionally"
+                                    />
+                                    <ContactBox 
+                                        href="https://www.facebook.com/i.who.am.0/" 
+                                        icon={<Icons.Facebook className="w-6 h-6" />}
+                                        label="Facebook"
+                                        value="Social connection"
+                                    />
+                                </div>
+
+                                <div className="flex justify-center gap-6 text-slate-500">
+                                    <a href="https://www.instagram.com/s0.0han/" target="_blank" rel="noreferrer" className="hover:text-pink-500 transition-colors">
+                                        <Icons.Instagram className="w-6 h-6" />
+                                    </a>
+                                    <a href="https://github.com/Monjurul-Hasan-Sohan" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                                        <Icons.Github className="w-6 h-6" />
+                                    </a>
+                                </div>
+                                
+                                <footer className="mt-16 text-sm text-slate-600">
+                                    <p>© 2026 Md Monjurul Hasan Bhuiyan. System Active.</p>
+                                </footer>
+                            </div>
+                        </section>
+                    </main>
                 </div>
-              </div>
+            );
+        };
+
+        // --- Helper Components ---
+        const Typewriter = ({ text }) => {
+            const [index, setIndex] = useState(0);
+            const [subIndex, setSubIndex] = useState(0);
+            const [reverse, setReverse] = useState(false);
+            const [blink, setBlink] = useState(true);
+
+            useEffect(() => {
+                if (index === text.length) {
+                    setIndex(0); return;
+                }
+                if (subIndex === text[index].length + 1 && !reverse) {
+                    setTimeout(() => setReverse(true), 1000); return;
+                }
+                if (subIndex === 0 && reverse) {
+                    setReverse(false);
+                    setIndex((prev) => prev + 1); return;
+                }
+                const timeout = setTimeout(() => {
+                    setSubIndex((prev) => prev + (reverse ? -1 : 1));
+                }, reverse ? 75 : 150);
+                return () => clearTimeout(timeout);
+            }, [subIndex, index, reverse, text]);
+
+            useEffect(() => {
+                const timeout2 = setInterval(() => { setBlink((prev) => !prev); }, 500);
+                return () => clearInterval(timeout2);
+            }, []);
+
+            return (
+                <span className="font-mono text-cyan-400">
+                    {`> ${text[index].substring(0, subIndex)}`}
+                    <span className={`${blink ? 'opacity-100' : 'opacity-0'}`}>_</span>
+                </span>
+            );
+        };
+
+        const SkillCard = ({ icon, title, skills, color }) => (
+            <div className={`p-6 bg-slate-900/50 backdrop-blur-sm border rounded-xl hover:bg-slate-800/50 transition-all duration-300 group ${color.split(' ')[0]} border-opacity-20`}>
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-slate-800 group-hover:scale-110 transition-transform ${color.split(' ')[1]}`}>
+                    {icon}
+                </div>
+                <h3 className="text-lg font-semibold text-slate-200 mb-3">{title}</h3>
+                <div className="flex flex-wrap gap-2">
+                    {skills.map((skill, i) => (
+                        <span key={i} className="text-xs px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700/50">
+                            {skill}
+                        </span>
+                    ))}
+                </div>
             </div>
-          </div>
-          
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer" onClick={() => scrollToSection('skills')}>
-            <ChevronDown className="w-6 h-6 text-slate-500" />
-          </div>
-        </section>
+        );
 
-
-        {/* SKILLS SECTION */}
-        <section id="skills" className="py-24 px-4 relative">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 flex items-center gap-3">
-              <span className="w-10 h-1 bg-cyan-500 rounded-full"></span>
-              Technical Arsenal
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <SkillCard 
-                icon={<Code />} 
-                title="Languages & Scripting" 
-                skills={['Python (OpenCV)', 'Bash Scripting', 'LaTeX', 'C/C++']} 
-                color="border-yellow-500/20 text-yellow-500"
-              />
-              <SkillCard 
-                icon={<Cpu />} 
-                title="Embedded & IoT" 
-                skills={['Microcontrollers', 'Control Systems', 'IoT Integration', 'Thermal Sensors']} 
-                color="border-cyan-500/20 text-cyan-500"
-              />
-              <SkillCard 
-                icon={<Terminal />} 
-                title="System Admin" 
-                skills={['Linux/Unix', 'Windows Config', 'Network Admin (CCNA)', 'AWS & GCP']} 
-                color="border-green-500/20 text-green-500"
-              />
-              <SkillCard 
-                icon={<Wifi />} 
-                title="Cybersecurity" 
-                skills={['Penetration Testing', 'MITM Attacks', 'SQL Injection', 'Wireshark']} 
-                color="border-red-500/20 text-red-500"
-              />
-              <SkillCard 
-                icon={<Layers />} 
-                title="Design & Simulation" 
-                skills={['SolidWorks', 'Blender 3D', 'Multisim/OrCAD', 'Processing']} 
-                color="border-purple-500/20 text-purple-500"
-              />
-              <SkillCard 
-                icon={<Briefcase />} 
-                title="Development" 
-                skills={['API Development', 'QT & GTK3', 'Automation', 'Cross-Platform UI']} 
-                color="border-blue-500/20 text-blue-500"
-              />
+        const ProjectCard = ({ title, desc, tech }) => (
+            <div className="group relative bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-cyan-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-1">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div className="p-8">
+                    <div className="flex justify-between items-start mb-4">
+                        <h3 className="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">{title}</h3>
+                        <Icons.Layers className="w-5 h-5 text-slate-600 group-hover:text-cyan-500 transition-colors" />
+                    </div>
+                    <p className="text-slate-400 mb-6 text-sm leading-relaxed">{desc}</p>
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                        {tech.map((t, i) => (
+                            <span key={i} className="text-xs font-mono text-cyan-300/80 bg-cyan-950/30 px-2 py-1 rounded border border-cyan-900/50">
+                                {t}
+                            </span>
+                        ))}
+                    </div>
+                </div>
             </div>
-          </div>
-        </section>
+        );
 
-
-        {/* PROJECTS SECTION */}
-        <section id="projects" className="py-24 px-4 bg-slate-900/30">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-end mb-12">
-              <h2 className="text-3xl font-bold flex items-center gap-3">
-                <span className="w-10 h-1 bg-purple-500 rounded-full"></span>
-                Featured Projects
-              </h2>
-              <a href="https://github.com/Monjurul-Hasan-Sohan" target="_blank" rel="noreferrer" className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
-                View GitHub <ExternalLink className="w-3 h-3" />
-              </a>
+        const TimelineItem = ({ date, title, org, loc, note }) => (
+            <div className="mb-10 ml-4 group relative">
+                <div className="absolute w-3 h-3 bg-slate-600 rounded-full mt-1.5 -left-[40px] border-2 border-slate-900 group-hover:bg-cyan-400 transition-colors"></div>
+                <time className="mb-1 text-sm font-normal leading-none text-slate-500 font-mono">{date}</time>
+                <h3 className="text-lg font-semibold text-slate-200 mt-2 group-hover:text-cyan-400 transition-colors">{title}</h3>
+                <p className="text-base font-normal text-slate-400">{org}</p>
+                <p className="text-xs text-slate-500 mt-1">{loc} {note && <span className="text-yellow-500/80">{note}</span>}</p>
             </div>
+        );
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <ProjectCard 
-                title="CNC Plotting System"
-                desc="A precision drawing machine integrating hardware and software control. Designed to create accurate and detailed designs with custom plotting algorithms."
-                tech={['Embedded', 'C++', 'Hardware', 'Control Systems']}
-              />
-              <ProjectCard 
-                title="Thermal Sensing System"
-                desc="Developed with Digitize IO for environmental monitoring. Utilizes sensor arrays to detect heat patterns and collect real-time data."
-                tech={['IoT', 'Sensors', 'Data Collection', 'Python']}
-              />
-              <ProjectCard 
-                title="IoT Smart Home"
-                desc="Comprehensive home automation system for remote control of appliances. Focuses on energy efficiency and user convenience via remote monitoring."
-                tech={['IoT', 'Network', 'Automation', 'Cloud']}
-              />
-              <ProjectCard 
-                title="Robo-Soccer Robot"
-                desc="Autonomous robot designed for the BRACU Traction Robo-Strikers competition. Features pathfinding, object detection, and motor control logic."
-                tech={['Robotics', 'C++', 'Algorithms', 'Motors']}
-              />
+        const AchievementCard = ({ title }) => (
+            <div className="flex items-center gap-4 p-4 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-yellow-500/30 transition-all">
+                <div className="p-2 rounded-full bg-yellow-500/10 text-yellow-500">
+                    <Icons.Award className="w-5 h-5" />
+                </div>
+                <span className="text-slate-300 font-medium">{title}</span>
             </div>
-          </div>
-        </section>
+        );
 
+        const ContactBox = ({ href, icon, label, value }) => (
+            <a href={href} target="_blank" rel="noreferrer" className="flex items-center p-4 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800 transition-all group">
+                <div className="p-3 bg-slate-800 rounded-lg text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-all">
+                    {icon}
+                </div>
+                <div className="ml-4 text-left">
+                    <p className="text-xs text-slate-500 uppercase tracking-wider">{label}</p>
+                    <p className="text-slate-300 font-medium truncate max-w-[150px] md:max-w-none">{value}</p>
+                </div>
+            </a>
+        );
 
-        {/* EXPERIENCE & EDUCATION SECTION */}
-        <section id="experience" className="py-24 px-4 relative">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
-            
-            {/* Education Column */}
-            <div>
-              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-                <BookOpen className="text-cyan-400" />
-                Education
-              </h2>
-              <div className="space-y-8 border-l-2 border-slate-800 ml-3 pl-8 relative">
-                <TimelineItem 
-                  date="Feb 2025 - Present"
-                  title="B.Sc. in Computer Science & Engineering"
-                  org="BRAC University"
-                  loc="Dhaka, Bangladesh"
-                />
-                <TimelineItem 
-                  date="Oct 2024 - Feb 2025"
-                  title="B.Sc. in Electrical & Computer Engineering"
-                  org="North South University"
-                  loc="Dhaka, Bangladesh"
-                  note="(Transferred)"
-                />
-                <TimelineItem 
-                  date="2021 - 2023"
-                  title="Higher Secondary Certificate (HSC)"
-                  org="National Ideal College"
-                  loc="Dhaka, Bangladesh"
-                />
-              </div>
-            </div>
-
-            {/* Achievements Column */}
-            <div>
-              <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-                <Award className="text-yellow-400" />
-                Achievements
-              </h2>
-              <div className="grid grid-cols-1 gap-4">
-                <AchievementCard title="National Physics Olympiad Champion" />
-                <AchievementCard title="IOI Olympiad National Qualifier" />
-                <AchievementCard title="Inspire Leadership Program Graduate" />
-                <AchievementCard title="NSU Techfest Robo-Soccer Participant" />
-                <AchievementCard title="OCW Top Performer & MITx Certification" />
-                <AchievementCard title="Hackerspace Community Top Volunteer" />
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* CONTACT SECTION */}
-        <section id="contact" className="py-24 px-4 bg-gradient-to-t from-slate-900 to-slate-950 border-t border-slate-800">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Initialize Connection</h2>
-            <p className="text-slate-400 mb-12">
-              Based in Bashundhara R/A, Dhaka. Open for collaborations on embedded systems, IoT, and cybersecurity projects.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
-               <ContactBox 
-                 href="mailto:monjurulhasanbd71@gmail.com" 
-                 icon={<Mail className="w-6 h-6" />}
-                 label="Email"
-                 value="monjurulhasanbd71@gmail.com"
-               />
-               <ContactBox 
-                 href="https://maps.app.goo.gl/VzQQoAVHyYyGHA298" 
-                 icon={<MapPin className="w-6 h-6" />}
-                 label="Location"
-                 value="Bashundhara R/A, Dhaka"
-               />
-               <ContactBox 
-                 href="https://www.linkedin.com/in/monjurul-hasan-bhuiyan/" 
-                 icon={<Linkedin className="w-6 h-6" />}
-                 label="LinkedIn"
-                 value="Connect professionally"
-               />
-               <ContactBox 
-                 href="https://www.facebook.com/i.who.am.0/" 
-                 icon={<Facebook className="w-6 h-6" />}
-                 label="Facebook"
-                 value="Social connection"
-               />
-            </div>
-
-            <div className="flex justify-center gap-6 text-slate-500">
-               <a href="https://www.instagram.com/s0.0han/" target="_blank" rel="noreferrer" className="hover:text-pink-500 transition-colors">
-                 <Instagram className="w-6 h-6" />
-               </a>
-               <a href="https://github.com/Monjurul-Hasan-Sohan" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-                 <Github className="w-6 h-6" />
-               </a>
-            </div>
-            
-            <footer className="mt-16 text-sm text-slate-600">
-              <p>© 2026 Md Monjurul Hasan Bhuiyan. System Active.</p>
-            </footer>
-          </div>
-        </section>
-
-      </main>
-    </div>
-  );
-};
-
-// --- Sub-Components ---
-
-const Typewriter = ({ text }) => {
-  const [index, setIndex] = useState(0);
-  const [subIndex, setSubIndex] = useState(0);
-  const [reverse, setReverse] = useState(false);
-  const [blink, setBlink] = useState(true);
-
-  useEffect(() => {
-    if (index === text.length) {
-      setIndex(0); // Loop back
-      return;
-    }
-
-    if (subIndex === text[index].length + 1 && !reverse) {
-      setTimeout(() => setReverse(true), 1000);
-      return;
-    }
-
-    if (subIndex === 0 && reverse) {
-      setReverse(false);
-      setIndex((prev) => prev + 1);
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      setSubIndex((prev) => prev + (reverse ? -1 : 1));
-    }, reverse ? 75 : 150);
-
-    return () => clearTimeout(timeout);
-  }, [subIndex, index, reverse, text]);
-
-  // Blink cursor
-  useEffect(() => {
-    const timeout2 = setInterval(() => {
-      setBlink((prev) => !prev);
-    }, 500);
-    return () => clearInterval(timeout2);
-  }, []);
-
-  return (
-    <span className="font-mono text-cyan-400">
-      {`> ${text[index].substring(0, subIndex)}`}
-      <span className={`${blink ? 'opacity-100' : 'opacity-0'}`}>_</span>
-    </span>
-  );
-};
-
-const SkillCard = ({ icon, title, skills, color }) => (
-  <div className={`p-6 bg-slate-900/50 backdrop-blur-sm border rounded-xl hover:bg-slate-800/50 transition-all duration-300 group ${color.split(' ')[0]} border-opacity-20`}>
-    <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-slate-800 group-hover:scale-110 transition-transform ${color.split(' ')[1]}`}>
-      {icon}
-    </div>
-    <h3 className="text-lg font-semibold text-slate-200 mb-3">{title}</h3>
-    <div className="flex flex-wrap gap-2">
-      {skills.map((skill, i) => (
-        <span key={i} className="text-xs px-2 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700/50">
-          {skill}
-        </span>
-      ))}
-    </div>
-  </div>
-);
-
-const ProjectCard = ({ title, desc, tech }) => (
-  <div className="group relative bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-cyan-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-1">
-    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-    <div className="p-8">
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">{title}</h3>
-        <Layers className="w-5 h-5 text-slate-600 group-hover:text-cyan-500 transition-colors" />
-      </div>
-      <p className="text-slate-400 mb-6 text-sm leading-relaxed">{desc}</p>
-      <div className="flex flex-wrap gap-2 mt-auto">
-        {tech.map((t, i) => (
-          <span key={i} className="text-xs font-mono text-cyan-300/80 bg-cyan-950/30 px-2 py-1 rounded border border-cyan-900/50">
-            {t}
-          </span>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
-const TimelineItem = ({ date, title, org, loc, note }) => (
-  <div className="mb-10 ml-4 group">
-    <div className="absolute w-3 h-3 bg-slate-600 rounded-full mt-1.5 -left-[6.5px] border-2 border-slate-900 group-hover:bg-cyan-400 transition-colors" />
-    <time className="mb-1 text-sm font-normal leading-none text-slate-500 font-mono">{date}</time>
-    <h3 className="text-lg font-semibold text-slate-200 mt-2 group-hover:text-cyan-400 transition-colors">{title}</h3>
-    <p className="text-base font-normal text-slate-400">{org}</p>
-    <p className="text-xs text-slate-500 mt-1">{loc} {note && <span className="text-yellow-500/80">{note}</span>}</p>
-  </div>
-);
-
-const AchievementCard = ({ title }) => (
-  <div className="flex items-center gap-4 p-4 rounded-lg bg-slate-900/50 border border-slate-800 hover:border-yellow-500/30 transition-all">
-    <div className="p-2 rounded-full bg-yellow-500/10 text-yellow-500">
-      <Award className="w-5 h-5" />
-    </div>
-    <span className="text-slate-300 font-medium">{title}</span>
-  </div>
-);
-
-const ContactBox = ({ href, icon, label, value }) => (
-  <a href={href} target="_blank" rel="noreferrer" className="flex items-center p-4 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800 transition-all group">
-    <div className="p-3 bg-slate-800 rounded-lg text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-all">
-      {icon}
-    </div>
-    <div className="ml-4 text-left">
-      <p className="text-xs text-slate-500 uppercase tracking-wider">{label}</p>
-      <p className="text-slate-300 font-medium">{value}</p>
-    </div>
-  </a>
-);
-
-export default Portfolio;
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Portfolio />);
+    </script>
+</body>
+</html>
