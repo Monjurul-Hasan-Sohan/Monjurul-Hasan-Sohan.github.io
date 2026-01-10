@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FIX: Force desktop width (1100px) on mobile devices to prevent "Big Text" issue -->
+    <meta name="viewport" content="width=1100">
     <title>Monjurul Hasan Sohan | Robotics Engineer</title>
     
     <!-- Tailwind CSS -->
@@ -30,6 +31,8 @@
             color: #ffffff;
             font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
+            /* FIX: Ensure body has minimum width to support the desktop layout on mobile */
+            min-width: 1100px; 
             background-image: 
                 radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15) 0%, transparent 25%),
                 radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 25%);
