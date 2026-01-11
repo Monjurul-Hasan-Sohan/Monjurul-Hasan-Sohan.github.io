@@ -217,8 +217,8 @@
                         </div>
                         
                         <h1 className="text-6xl md:text-8xl font-black mb-6 leading-[0.9] tracking-tighter">
-                            HELLO, <br/>
-                            I'M <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 animate-gradient-x">SOHAN</span>
+                            BONJOUR, <br/>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 animate-gradient-x">FROM MONJUR</span>
                         </h1>
                         
                         <p className="text-xl text-gray-400 mb-8 font-light max-w-lg mx-auto lg:mx-0">
@@ -555,7 +555,8 @@
                 { type: 'info', text: 'Type "skills" to view technical stack.' }
             ]);
             const [input, setInput] = useState('');
-            const endRef = useRef(null);
+            // FIX: Ref specifically for the scrollable container, not the end marker
+            const bodyRef = useRef(null);
 
             const commands = {
                 help: "Available: skills, about, location, contact, clear",
@@ -584,8 +585,11 @@
                 }
             };
 
+            // FIX: Only scroll the container DIV, do not use scrollIntoView which jumps the page
             useEffect(() => {
-                endRef.current?.scrollIntoView({ behavior: "smooth" });
+                if (bodyRef.current) {
+                    bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+                }
             }, [lines]);
 
             return (
@@ -606,7 +610,10 @@
                                 <span className="ml-4 text-gray-500 text-xs">monjurul@mainframe:~</span>
                             </div>
                             
-                            <div className="p-6 h-80 overflow-y-auto bg-black/80 text-gray-300">
+                            <div 
+                                ref={bodyRef}
+                                className="p-6 h-80 overflow-y-auto bg-black/80 text-gray-300"
+                            >
                                 {lines.map((line, i) => (
                                     <div key={i} className="mb-2 whitespace-pre-wrap">
                                         {line.type === 'user' && <span className="text-pink-400 mr-2"></span>}
@@ -617,7 +624,6 @@
                                         {line.text}
                                     </div>
                                 ))}
-                                <div ref={endRef} />
                                 <div className="flex items-center mt-4">
                                     <span className="text-pink-500 mr-2">➜</span>
                                     <input 
